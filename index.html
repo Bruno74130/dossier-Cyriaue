@@ -610,6 +610,10 @@ Ce message s’autodétruira dans quelques secondes.
     </div>
   </div>
 
+  <audio id="bgMusic" preload="auto">
+    <source src="assets/mission.mp3" type="audio/mpeg" />
+  </audio>
+
   <script>
     function lancerConfettis() {
       const container = document.getElementById("confetti");
@@ -640,13 +644,24 @@ Ce message s’autodétruira dans quelques secondes.
       }
     }
 
-    document.getElementById("btnReveal").addEventListener("click", () => {
+    document.getElementById("btnReveal").addEventListener("click", async () => {
+      const music = document.getElementById("bgMusic");
+      if (music) {
+        music.volume = 0.35;
+        try {
+          await music.play();
+        } catch (e) {
+          console.log("Lecture audio bloquée:", e);
+        }
+      }
+
       const panel = document.getElementById("panelSecret");
       panel.classList.add("show");
       lancerConfettis();
     });
-  </script>
+</script>
 </body>
 </html>
+
 
 
