@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Classification : Confidentiel – Dossier Résultats</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #050816;
+      --card: #0b1020;
+      --accent: #f97316;
+      --success: #22c55e;
+      --text-main: #f9fafb;
+      --text-soft: #9ca3af;
+      --border: rgba(148, 163, 184, 0.45);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      background: radial-gradient(circle at top, #111827 0, var(--bg) 52%, #020617 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 480px;
+      margin: auto;
+    }
+
+    .phone-frame {
+      border-radius: 32px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.9),
+        0 20px 45px rgba(0, 0, 0, 0.9);
+      padding: 14px 14px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .notch {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 16px;
+      background: #020617;
+      border-radius: 999px;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.95);
+    }
+
+    .header {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-align: center;
+    }
+
+    .tagline {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.28em;
+      color: var(--text-soft);
+    }
+
+    .title {
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .title span { color: var(--accent); }
+
+    .stamp {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin: 10px auto 0;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px dashed rgba(148, 163, 184, 0.9);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-soft);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .stamp-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(249, 115, 22, 0.9);
+    }
+
+    .section {
+      margin-top: 16px;
+      padding: 14px 12px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: radial-gradient(
+        circle at top left,
+        rgba(249, 115, 22, 0.18) 0,
+        rgba(15, 23, 42, 0.96) 50%
+      );
+    }
+
+    .section h2 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-soft);
+      margin-bottom: 8px;
+    }
+
+    .intro p {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-main);
+    }
+
+    .intro p + p {
+      margin-top: 6px;
+      color: var(--text-soft);
+      font-size: 12px;
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.9);
+    }
+
+    .item-body {
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .item-title { font-weight: 600; }
+
+    .item-sub {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .badge-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 5px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      color: var(--text-soft);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .villanelle-card {
+      margin-top: 12px;
+      border-radius: 16px;
+      padding: 10px 10px 9px;
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.2), rgba(15, 23, 42, 0.98));
+      border: 1px solid rgba(249, 115, 22, 0.7);
+      font-size: 12px;
+      color: var(--text-main);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .villanelle-card::before {
+      content: "DIVISION VILLANELLE – ACCÈS LIMITE";
+      position: absolute;
+      top: 6px;
+      right: -40px;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      transform: rotate(18deg);
+      opacity: 0.22;
+      color: #fed7aa;
+      pointer-events: none;
+    }
+
+    .villanelle-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 4px;
+    }
+
+    .highlight {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .controls {
+      margin-top: 16px;
+      padding: 12px 10px 10px;
+      border-radius: 18px;
+      border: 1px dashed var(--border);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .controls p {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-bottom: 8px;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 11px 16px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      background: linear-gradient(to right, #22c55e, #fbbf24);
+      color: #022c22;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 16px 32px rgba(22, 163, 74, 0.7);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+    }
+
+    .btn span.icon {
+      width: auto;
+      height: auto;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+      font-size: 16px;
+      background: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 40px rgba(22, 163, 74, 0.9);
+      filter: brightness(1.04);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 12px 26px rgba(22, 163, 74, 0.7);
+      filter: brightness(0.98);
+    }
+
+    .footer {
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--text-soft);
+      text-align: center;
+    }
+
+    .footer strong { color: var(--accent); }
+
+    .panel-secret {
+      margin-top: 14px;
+      padding: 12px 12px 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(34, 197, 94, 0.85);
+      background: radial-gradient(circle at top, rgba(22, 163, 74, 0.2) 0, rgba(15, 23, 42, 0.96) 55%);
+      font-size: 13px;
+      line-height: 1.5;
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .panel-secret.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .panel-secret h3 {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    /* Détail des trois examens dans le bloc secret */
+
+    .exam-list {
+      margin: 10px 0 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .exam {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .exam-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(34, 197, 94, 0.6);
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.9);
+    }
+
+    .exam-body {
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .exam-title {
+      font-weight: 600;
+    }
+
+    .exam-sub {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .exam-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 6px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(22, 163, 74, 0.18);
+      border: 1px solid rgba(34, 197, 94, 0.9);
+      color: var(--success);
+      gap: 6px;
+    }
+
+    .exam-pill span.check {
+      font-size: 13px;
+    }
+
+    .quote {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--text-soft);
+      font-style: italic;
+    }
+
+    .heart-row {
+      margin-top: 6px;
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      font-size: 14px;
+    }
+
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 7px;
+      height: 14px;
+      border-radius: 3px;
+      top: -20px;
+      animation: confetti-fall linear forwards;
+      opacity: 0.9;
+    }
+
+    @keyframes confetti-fall {
+      0% { transform: translate3d(0, -20px, 0) rotateZ(0deg); }
+      100% { transform: translate3d(0, 120vh, 0) rotateZ(360deg); }
+    }
+
+    @media (min-width: 600px) {
+      body { padding: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="confetti" id="confetti"></div>
+  <div class="app">
+    <div class="phone-frame">
+      <div class="notch"></div>
+
+      <header class="header">
+        <div class="tagline">classification : confidentiel</div>
+        <div class="title">
+          Dossier <span>Résultats</span>
+        </div>
+        <div class="stamp">
+          <span class="stamp-dot"></span>
+          <span>Accès sur invitation</span>
+        </div>
+      </header>
+
+      <section class="section intro">
+        <!-- 🔥 Titre plus percutant / Villanelle style -->
+        <h2>brief ultra confidentiel reservé au seul membre de la task force dans le combat contre Mister Krabs </h2>
+        <p>
+          Ceci est un message spécial, envoyé par l’agent sous couverture
+          que vous connaissez sous le nom de : <strong>Cyriaque</strong>.
+        </p>
+        <p>
+          Je reviens du front  -stop- J’ai passé un scanner TAP, une IRM du foie et une prise de sang -stop-  
+          Les résultats sont tombés -stop- Au lieu d’un long blabla médical,
+          je vous ai préparé un dossier: court, tranchant,
+          et sans langue de bois.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>rapports de terrain</h2>
+        <div class="list">
+          <div class="item">
+            <div class="icon">🛰️</div>
+            <div class="item-body">
+              <div class="item-title">Scanner TAP</div>
+              <div class="item-sub">
+                Opération TAP exécutée selon protocole de reconnaissance étendue.
+Thorax, Abdomen, Pelvis inspectés sans exception ni tolérance.
+Chaque zone a été cartographiée pour rechercher la trace de Mr K, chaque anomalie potentielle identifiée.
+Rapport terrain validé et archivé.
+              </div>
+              <div class="badge-inline">
+                ◼ Statut : Dossier verrouillé, accès sécurisé plus bas
+              </div>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="icon">🧲</div>
+            <div class="item-body">
+              <div class="item-title">IRM du foie</div>
+              <div class="item-sub">
+                Ciblage hépatique réalisé en imagerie haute définition.
+Analyse fine, couche par couche. Acquisition complète, lecture séquentielle, données exploitables à 100 %.
+Analyse finale autorisée.
+              </div>
+              <div class="badge-inline">
+                ◼ Conclusion : voir rapport final
+              </div>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="icon">🩸</div>
+            <div class="item-body">
+              <div class="item-title">Prise de sang</div>
+              <div class="item-sub">
+                Paramètres biologiques collectés conformément aux standards en vigueur. Marqueurs biologiques alignés, paramètres contrôlés, valeurs comparées aux références.
+Les données sont consolidées et validées.
+Le rapport reste classifié jusqu’à déverrouillage.
+              </div>
+              <div class="badge-inline">
+                ◼ Synthèse : accessible sur clic
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="villanelle-card">
+          <div class="villanelle-title">note – division villanelle</div>
+          <p>
+            L'entité K a été évaluée pour un engagement à long terme et comme acteur récurrent potentiel. L'évaluation de son comportement et de son évolution sont en cours..</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="controls">
+        <p>
+          Le QG m’a autorisé à partager ce que racontent vraiment ces examens,
+          mais uniquement avec les personnes qui cliqueront sur le bouton ci-dessous.
+        </p>
+        <p style="font-size:11px; color:var(--text-soft); margin-bottom:6px;">
+          <em>Note :</em> L’accès au contenu suivant est susceptible d’entraîner une réaction émotionnelle non planifiée.
+ Continuer implique acceptation pleine et entière de cet effet. Ce phénomène est considéré comme acceptable.
+        </p>
+        <button class="btn" id="btnReveal">
+          <span class="icon">🗝️</span>
+          <span>Déverrouiller le rapport final confidentiel</span>
+        </button>
+      </section>
+
+      <section class="panel-secret" id="panelSecret">
+        <h3>Verdict officiel du QG :</h3>
+        <p>
+          Les médecins sont <strong class="highlight">rassurés</strong>.  
+          Les examens sont <strong class="highlight">bons</strong>.  
+          Le cancer ne décroche pas le premier rôle cette saison.
+        </p>
+
+        <div class="exam-list">
+          <div class="exam">
+            <div class="exam-icon">🛰️</div>
+            <div class="exam-body">
+              <div class="exam-title">Scanner TAP</div>
+              <div class="exam-sub">
+                Inspection complète du paysage intérieur.  
+                Bilan officiel : rien de suspect qui mérite un spin-off dramatique.
+              </div>
+              <div class="exam-pill">
+                <span class="check">✔</span>
+                <span>ZONE CLAIRE</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="exam">
+            <div class="exam-icon">🧲</div>
+            <div class="exam-body">
+              <div class="exam-title">IRM du foie</div>
+              <div class="exam-sub">
+                Zoom ultra-précis sur le foie.  
+                Conclusion : situation sous contrôle, pas de plot twist malveillant.
+              </div>
+              <div class="exam-pill">
+                <span class="check">✔</span>
+                <span>ASPECT RASSURANT</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="exam">
+            <div class="exam-icon">🩸</div>
+            <div class="exam-body">
+              <div class="exam-title">Prise de sang</div>
+              <div class="exam-sub">
+                Les marqueurs ont été passés au peigne fin.  
+                Ils se tiennent tranquilles, comme briefé.
+              </div>
+              <div class="exam-pill">
+                <span class="check">✔</span>
+                <span>BIO OK</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p>
+          L’analyse comportementale de l'entité K n’a révélé aucun avantage stratégique pour la cible. Les performances observées de l'entité K ne justifient pas une reclassification prioritaire.
+Les capacités d’impact de l'entité K ont été réévaluées à la baisse après analyse approfondie.
+Aucune action supplémentaire requise à ce stade. Conclusion : Dossier maintenu en observation, avantage opérationnel maintenu. Vous pouvez respirer.
+        </p>
+        <p class="quote">
+          “Merci d’avoir été là dans les moments où je ne savais pas encore
+          comment l’épisode se terminerait.” 
+        </p>
+        <div class="heart-row">
+          <span>💛</span><span>🖤</span><span>💛</span>
+        </div>
+      </section>
+
+      <div class="footer">
+        Dossier classé <strong>“good news only”</strong>.  
+        Les détails techniques restent avec l’équipe médicale,
+        mais l’essentiel, tu viens de le déverrouiller.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function lancerConfettis() {
+      const container = document.getElementById("confetti");
+      const colors = ["#f97316", "#22c55e", "#38bdf8", "#e879f9", "#facc15"];
+      const total = 70;
+
+      for (let i = 0; i < total; i++) {
+        const piece = document.createElement("div");
+        piece.className = "confetti-piece";
+
+        const size = Math.random() * 0.8 + 0.6;
+        const left = Math.random() * 100;
+        const delay = Math.random() * 0.3;
+        const duration = Math.random() * 1.5 + 2.2;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+
+        piece.style.left = left + "vw";
+        piece.style.background = color;
+        piece.style.transform = `scale(${size})`;
+        piece.style.animationDuration = duration + "s";
+        piece.style.animationDelay = delay + "s";
+
+        container.appendChild(piece);
+
+        setTimeout(() => {
+          piece.remove();
+        }, (duration + delay) * 1000);
+      }
+    }
+
+    document.getElementById("btnReveal").addEventListener("click", () => {
+      const panel = document.getElementById("panelSecret");
+      panel.classList.add("show");
+      lancerConfettis();
+    });
+  </script>
+</body>
+</html>
